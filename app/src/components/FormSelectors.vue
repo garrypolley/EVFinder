@@ -250,15 +250,24 @@
       },
     
       async getKiaInventory() {
-        const response = await fetch(apiBase + '/api/inventory/kia?' + new URLSearchParams({
-          zip: this.localForm.zipcode,
-          year: this.localForm.year,
-          model: this.localForm.model,
-          radius: this.localForm.radius,
-        }),
-        {method: 'GET', mode: 'cors',})
+        try {
+          const response = await fetch(apiBase + '/api/inventory/kia?' + new URLSearchParams({
+            zip: this.localForm.zipcode,
+            year: this.localForm.year,
+            model: this.localForm.model,
+            radius: this.localForm.radius,
+          }),
+          {method: 'GET', mode: 'cors',})
 
-        var r = await response.json()  // Raw results
+          var r = await response.json()  // Raw results
+          
+          if (!response.ok) {
+            this.updateStore({'inventory': [{'error': response.status}]})
+          }
+        } catch (err) {
+            this.updateStore({'inventory': [{'error': 'Unknown'}]})
+          }
+
         var n = normalizeJson(r['vehicles'], kiaJsonMapping)  // Normalized results
 
         n.forEach(vehicle => {

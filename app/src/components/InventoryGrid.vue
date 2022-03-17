@@ -5,9 +5,14 @@
 
     <!-- Table here -->
     <b-row class="d-flex justify-content-center">
-      <div v-if="showInventoryAlert" class="mt-5">
+      <div v-if="showAlertNoVehicles" class="mt-5">
         <b-alert show variant="success" class="no-inventory px-5">
           No Vehicles Were Found. Adjust your search parameters and try again.
+        </b-alert>
+      </div>
+      <div v-else-if="showAlertApiError" class="mt-5">
+        <b-alert show variant="warning" class="no-inventory px-5">
+          An error occured ({{ this.inventory[0]['error'] }}). Please try again later.
         </b-alert>
       </div>
       <div v-else>
@@ -502,16 +507,23 @@
         'form'
       ]),
 
-      showInventoryAlert() {
+      showAlertNoVehicles() {
         if (
           !this.tableBusy
-          && Object.values(this.inventory).length == 0
+          && Object.values(Object.values(this.inventory[0]).length == 0)
           && Object.values(this.form).filter(f => f.length > 0).length == 4){
           return true
         }
         else {
           return false
         }
+      },
+      showAlertApiError() {
+        // Surface an error message in the UI if we get a non-200 response back
+        // from the API
+        if (this.tableBusy && this.inventory[0]['error']) {
+          return true
+        } else { return false }
       },
     },
     watch: {},
