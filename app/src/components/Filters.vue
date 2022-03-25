@@ -3,6 +3,10 @@
     <b-row align-h="center" class="d-flex justify-content-center border-top pt-3" align-v="center">
       <b-icon icon="sliders" aria-hidden="true" class="mr-2" font-scale="1.3"></b-icon>
       
+      <FilterDropdown
+        filterDisplayName="Testing"
+        inventoryKey="ExtColorLongDesc"
+      />
       <!-- Trim Filter -->
         <b-dd id="trim-dd" size="sm" variant="outline-primary" class="px-1">
           <template #button-content>
@@ -199,8 +203,13 @@
 
 <script>
   import { mapActions, mapState } from 'vuex'
+  import FilterDropdown from './FilterDropdown.vue'
 
   export default {
+    components: {
+      FilterDropdown,
+    },
+
     mounted() {},
 
     data() {
