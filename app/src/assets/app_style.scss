@@ -40,12 +40,7 @@ $light:         $light-bluegray;
 
 .attention {
   color: $grey;
-}
-
-.vin {
-  font-family: $font-family-monospace;
-  font-size: 1rem !important;
-}
+};
 
 // Include Bootstrap and BootstrapVue SCSS files
 @import '~bootstrap/scss/bootstrap.scss';

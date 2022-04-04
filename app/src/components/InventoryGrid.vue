@@ -119,7 +119,7 @@
               </b-list-group>
               
           
-            <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
+            <b-button size="sm" variant="light" @click="row.toggleDetails">Hide Details</b-button>
           </b-card>
         </template>
               <!-- Table Busy Indicator -->
@@ -408,10 +408,15 @@
 
   .table-hover tbody tr:hover {
     background-color: $highlight-bluegreen !important;
-}
+  }
 
   .no-inventory {
     color: #6c757d !important;
     font-size: 1.2rem;
-  }  
+  }
+
+  .vin {
+    font-family: $font-family-monospace;
+    font-size: 1rem !important;
+  }
 </style>
