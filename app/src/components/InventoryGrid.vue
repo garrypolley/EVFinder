@@ -6,7 +6,7 @@
     <!-- Table here -->
     <b-row class="d-flex justify-content-center">
       <div v-if="showInventoryAlert" class="mt-5">
-        <b-alert show variant="success" class="no-inventory px-5">
+        <b-alert show variant="success" class="no-inventory-message px-5">
           No Vehicles Were Found. Adjust your search parameters and try again.
         </b-alert>
       </div>
@@ -170,16 +170,16 @@
         // TODO: Normalize these keys, so they're not manufacturer specific
         
         fields: [
-          { key: 'ExtColorLongDesc', label: 'Ext. Color', sortable: true, sortDirection: 'desc', formatter: titleCase},
-          { key: 'interiorColorCd', label: 'Int. Color', sortable: true, sortDirection: 'desc'},
-          { key: 'trimDesc', label: 'Trim', sortable: true, sortDirection: 'desc'},
-          { key: 'drivetrainDesc', label: 'Drivetrain', sortable: true, sortDirection: 'desc', formatter: titleCase},
-          { key: 'price', label: 'MSRP', sortable: true, sortDirection: 'desc', formatter: convertToCurrency},
-          { key: 'PlannedDeliveryDate', label: 'Delivery Date', formatter: "formatDate", sortable: true, sortByFormatted: true, filterByFormatted: true },
+          { key: 'ExtColorLongDesc', label: 'Ext. Color', sortable: true, sortDirection: 'desc', formatter: titleCase, thClass: 'table-header'},
+          { key: 'interiorColorCd', label: 'Int. Color', sortable: true, sortDirection: 'desc', thClass: 'table-header', tdClass: "td-center"},
+          { key: 'trimDesc', label: 'Trim', sortable: true, sortDirection: 'desc', thClass: 'table-header'},
+          { key: 'drivetrainDesc', label: 'Drivetrain', sortable: true, sortDirection: 'desc', formatter: titleCase, thClass: 'table-header'},
+          { key: 'price', label: 'MSRP', sortable: true, sortDirection: 'desc', formatter: convertToCurrency, thClass: 'table-header'},
+          { key: 'PlannedDeliveryDate', label: 'Delivery Date', formatter: "formatDate", sortable: true, sortByFormatted: true, filterByFormatted: true , thClass: 'table-header'},
           // Virtual Column
-          { key: 'dealer-name-address', label: 'Dealer Information', sortable: true, sortByFormatted: true, filterByFormatted: true },
-          { key: 'distance', label: 'Distance', sortable: true, sortDirection: 'desc' },
-          { key: 'vin-with-more-details', label: "VIN", sortable: false }
+          { key: 'dealer-name-address', label: 'Dealer Information', sortable: true, sortByFormatted: true, filterByFormatted: true , thClass: 'table-header'},
+          { key: 'distance', label: 'Distance', sortable: true, sortDirection: 'desc' , thClass: 'table-header'},
+          { key: 'vin-with-more-details', label: "VIN", sortable: false , thClass: 'table-header'},
         ],
       } // End of return
     },
@@ -410,7 +410,18 @@
     background-color: $highlight-bluegreen !important;
   }
 
-  .no-inventory {
+  .table-header {
+    background-color: rgb(251, 239, 189);
+    // padding: .5rem !important;
+    vertical-align: middle !important;
+    text-align: center;
+  }
+
+  .td-center {
+    // text-align: center;
+  }
+
+  .no-inventory-message {
     color: #6c757d !important;
     font-size: 1.2rem;
   }
