@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from '../App.vue'
+import Vin from '../Vin.vue'
 
 // import store from '../vuexStore'
 
@@ -20,6 +21,15 @@ const routes = [
       color: route.query.c,
       drivetrain: route.query.d,
       msrp: route.query.mp,
+    })
+  },
+
+  {
+    path: '/vin',
+    component: Vin,
+    props: route => ({
+      // These are the available query params
+      vin: route.query.v,  // ?v=KM8KMDAF2NU084597
     })
   },
 ]
