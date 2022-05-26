@@ -5,7 +5,9 @@ Vue.use(Vuex)
 
 const state = {
   tableBusy: false,
+  vinTableBusy: false,
   inventory: [],
+  vinDetail: {},
   filter: null,
   inventoryCount: 0,
   filterOptions: {},
@@ -49,6 +51,11 @@ const mutations = {
   mutateFilterSelections(state, payload) {
     state['filterSelections'] = payload
     },
+  
+  // vinDetail Here
+  mutateVinDetail(state, payload) {
+    state['vinDetail'] = payload
+    },
 }
 
 // actions are functions that cause side effects and can involve
@@ -61,7 +68,12 @@ const actions = {
   updateFilterSelections({ commit }, payload) {
     // console.log(payload)
     commit('mutateFilterSelections', payload)
-  }
+  },
+
+  updateVinDetail({ commit }, payload) {
+    console.log(`Commit for vin: ${payload}`)
+    commit('mutateVinDetail', payload)
+  },
 }
 
 /*

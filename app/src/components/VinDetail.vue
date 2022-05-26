@@ -59,9 +59,37 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex'
+  import {has} from 'lodash'
+
 export default {
-  
-}
+  mounted() {},
+
+  data() {
+      return {
+        vinDetail: {},
+        vinTableBusy: false,
+        vinDetailClickedCount: 0,
+      }
+  },
+
+  computed: {
+      ...mapState([
+        // 'tableBusy',
+        // 'inventory',
+        // 'filterSelections',
+        'form',
+        'vinTableBusy'
+      ]),
+  },
+
+  methods: {
+    hasHyundaiVinDetail(item) {
+      return (has(item, 'DI') && has(item['DI'], 'DealerVDPURL'))
+    },
+  },
+
+}  // default
 </script>
 
 <style>

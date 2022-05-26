@@ -49,79 +49,25 @@
           <!-- VIN Column -->
           <template #cell(vin-with-more-details)="row">
             <!-- If we've already made the API call and stored the VIN data, just show it -->
-            <div v-if="row.item.vin in vinDetail">
+            <div v-if="row.item.vin in this.vinDetail">
               <b-button size="sm" variant="light" @click="row.toggleDetails" class="mr-2 align-middle vin">
                 {{ row.item.vin }} <b-icon-chevron-down aria-hidden="true"></b-icon-chevron-down>
               </b-button>
             </div>
             <!-- Otherwise, make the VIN data API call -->
-            <div v-else>
+            <!-- <div v-else>
               <b-button size="sm" variant="light" @click="toggleDetails(row.item)" class="mr-2 align-middle vin">
                 {{ row.item.vin }} <b-icon-chevron-down aria-hidden="true"></b-icon-chevron-down>
               </b-button>
-            </div>
+            </div> -->
           </template>
 
           <!-- Vin Details Section -->
-          <template #row-details="row">
-          <b-card>
-            <b-row class="justify-content-md-center">
-              <div v-if="vinTableBusy" class="text-center my-2">
-                <b-spinner class="align-middle mr-2" variant="success"></b-spinner>
-                <strong>Fetching Details for This Vehicle...</strong>
-              </div>
-            </b-row>
+          <template #row-details>
+            <VinDetail
 
-              <!-- Vin Details List Group -->
-              <!-- Dealer Website Button -->
-              <div v-if="form.model != 'N'">
-                <div v-if="hasHyundaiVinDetail(vinDetail[row.item.vin])">
-                  <b-row class="py-2" align-h="center">
-                    <b-button
-                      size="md"
-                      variant="light"
-                      @click="openUrlInNewWindow(vinDetail[row.item.vin]['DI']['DealerVDPURL'])"
-                      class="mr-2 align-middle"
-                      >
-                      Dealer's Website for This Vehicle
-                      <b-icon icon="box-arrow-up-right" aria-hidden="true" class="ml-2" font-scale="1"></b-icon>
-                    </b-button>
-                  </b-row>
-                </div>
-              </div>
-              <!-- Window sticker for Kias -->
-              <!-- <div v-if="form.model == 'N'">
-                  <b-row class="py-2" align-h="center">
-                    <b-button
-                      size="md"
-                      variant="light"
-                      @click="openUrlInNewWindow('https://www.kia.com/us/services/us/windowsticker/load/' + row.item.vin)"
-                      class="mr-2 align-middle"
-                      >
-                      Window Sticker for This Vehicle
-                      <b-icon icon="box-arrow-up-right" aria-hidden="true" class="ml-2" shift-v="5" font-scale=".8"></b-icon>
-                    </b-button>
-                  </b-row>
-              </div> -->
-              
-                <b-list-group
-                  horizontal
-                  v-for="(item, key) in vinDetail[row.item.vin]" :key=key
-                >
-                <!-- We're displaying the Dealer URL above, don't display it here -->
-                  <b-col cols=4 v-if="key != 'DI'">
-                    <b-list-group-item class="border-0 py-1"><b>{{ key }}</b></b-list-group-item>
-                  </b-col>
-                  <div v-if="key != 'DI'">
-                    <b-list-group-item class="border-0 py-1">{{ item }}</b-list-group-item>
-                  </div>
-                
-              </b-list-group>
-              
-          
-            <b-button size="sm" @click="row.toggleDetails" variant="light">Hide Details</b-button>
-          </b-card>
-        </template>
+            />
+          </template>
               <!-- Table Busy Indicator -->
               <template #table-busy>
                 <div class="text-center my-2">
@@ -137,9 +83,9 @@
 
 <script>
   import Filters from './Filters.vue'
+  import VinDetail from './VinDetail.vue'
 
   import {mapActions, mapState} from 'vuex'
-  import {has} from 'lodash'
 
   import {convertToCurrency, titleCase} from '../libs'
   import {kiaVinMapping} from '../manufacturers/kiaMappings'
@@ -147,8 +93,9 @@
   
   export default {
     components: {
-      Filters
-      },
+    Filters,
+    VinDetail,
+  },
 
       created() {
         window.addEventListener('beforeunload', this.beforeWindowUnload)
@@ -163,8 +110,8 @@
 
     data() {
       return {
-        vinDetail: {},
-        vinTableBusy: false,
+        // vinDetail: {},
+        // vinTableBusy: false,
         vinDetailClickedCount: 0,
 
         // TODO: Normalize these keys, so they're not manufacturer specific
@@ -185,7 +132,8 @@
     },
     methods: {
       ...mapActions([
-        'updateStore'
+        'updateStore',
+        'updateVinDetail',
         ]),
 
       async toggleDetails(item) {
@@ -219,11 +167,12 @@
             }
           })
 
-          this.$set(
-            this.vinDetail,  // Where to store
-            item.vin,        // What's the key
-            k,            // Data to store
-            )
+          this.updateVinDetail({'vinDetail': item.vin})
+          // this.$set(
+          //   this.vinDetail,  // Where to store
+          //   item.vin,        // What's the key
+          //   k,            // Data to store
+          //   )
         }
         else {  // Make a vin API call for Hyundai
           // Show users that we're fetching data
@@ -363,12 +312,6 @@
           'VIN Detail', {props: {count: this.vinDetailClickedCount}}
           )
       },
-
-      hasHyundaiVinDetail(item) {
-        return (has(item, 'DI') && has(item['DI'], 'DealerVDPURL'))
-      },
-
-      
     }, // methods
     
     computed: {
