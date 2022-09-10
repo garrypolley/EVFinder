@@ -40,6 +40,7 @@ def validate(validation_type, validation_data):
         'Ioniq%205',
         'Ioniq%20Phev',
         'Kona%20Ev',
+        'mache'  # Mustang Mach-E
         'Santa%20Fe%20Phev',
         'Tucson%20Phev',
         'N',  # EV6
